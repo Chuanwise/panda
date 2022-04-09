@@ -1,0 +1,4 @@
+rootProject.name = 'panda'
+include 'panda-api'
+include 'panda-bukkit'
+

@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+
+//    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+// scripts in root project directory
+def mirrorScriptFile = new File('mirrors.gradle')
+def publishScriptFile = new File('publish.gradle')
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'java'
+//    apply plugin: 'com.github.johnrengelman.shadow'
+
+    group 'cn.chuanwise'
+    version '5.0-SNAPSHOT'
+
+    // install script if the file is exists
+    if (mirrorScriptFile.isFile()) {
+        apply from: mirrorScriptFile.getAbsolutePath()
+    }
+    if (publishScriptFile.isFile()) {
+        apply from: publishScriptFile.getAbsolutePath()
+    }
+
+    repositories {
+        mavenLocal()
+
+        mavenCentral()
+
+        // codethink maven
+        maven {
+            name 'codethink maven'
+
+            // set to true for ignoring warning
+            allowInsecureProtocol true
+
+            url 'http://121.4.253.187:8081/repository/maven-public/'
+        }
+    }
+
+    dependencies {
+        // lombok
+        compileOnly 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+        testCompileOnly 'org.projectlombok:lombok:1.18.22'
+
+        // common
+        api 'cn.chuanwise:chuanwise-common:1.0-SNAPSHOT'
+
+        // junit
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+//    shadowJar {
+//        exclude "META-INF/*.SF"
+//        exclude "META-INF/*.DSA"
+//        exclude "META-INF/*.RSA"
+//        exclude "META-INF/LICENSE"
+//
+//        archiveName project.name + '-' + version + '.' + extension
+//    }
+}

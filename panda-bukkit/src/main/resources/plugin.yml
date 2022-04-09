@@ -1,0 +1,4 @@
+name: Panda
+author: Chuanwise
+version: 5.0-SNAPSHOT
+main: cn.chuanwise.panda.bukkit.BukkitPandaPlugin

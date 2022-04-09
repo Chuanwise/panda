@@ -1,0 +1,7 @@
+dependencies {
+    // command api
+    api 'cn.chuanwise:command-core:2.6'
+
+    compileOnly 'org.yaml:snakeyaml:1.30'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
+}
