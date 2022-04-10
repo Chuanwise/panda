@@ -63,6 +63,6 @@ public class ExamplePlugin
 
 `PandaLib` 才刚刚开始，你的每一次使用和完善都是对我们最大的帮助。欢迎你同我们一起助力它的发展。
 
-* [`BukkitPanda`](./docs/bukkit/README.md)
+* [**文档**](./docs/README.md)
 
 > `QQ` 群 `小明练剑场`：[1028959718](https://jq.qq.com/?_wv=1027&k=sjBXo6xh)
