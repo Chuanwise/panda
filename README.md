@@ -1,5 +1,5 @@
-### Minecraft 开发工具库
-# **PandaLib** - **熊猫库**
+**Minecraft 开发工具库**
+# **Panda**
 
 `PandaLib` 是一款便捷的、高效的 `Minecraft` 开发工具库。由椽子发起并编写，旨在将开发者从 `Minecraft` 原生的一些较为不便的 `API` 中解放出来，将更多的精力聚焦在核心业务逻辑上。
 
