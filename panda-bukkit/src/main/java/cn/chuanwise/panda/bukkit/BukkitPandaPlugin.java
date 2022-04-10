@@ -31,25 +31,25 @@ public class BukkitPandaPlugin
     }
 
     public class Commands {
-        @Format("pl online [online-player]")
+        @cn.chuanwise.command.annotation.Command("pl online [online-player]")
         void player(CommandSender commandSender,
                     @Reference("online-player") Player player) {
             contact.infoString(commandSender, "player: " + player.getName());
         }
 
-        @Format("pl offline [offline-player]")
+        @cn.chuanwise.command.annotation.Command("pl offline [offline-player]")
         void onlinePlayer(CommandSender commandSender,
                           @Reference("offline-player") OfflinePlayer offlinePlayer) {
             contact.infoString(commandSender, "offline player: " + offlinePlayer.getName());
         }
 
-        @Format("pl world [world]")
+        @cn.chuanwise.command.annotation.Command("pl world [world]")
         void world(CommandSender commandSender,
                    @Reference("world") World world) {
             contact.infoString(commandSender, "world: " + world.getName());
         }
 
-        @Format("pl debug")
+        @cn.chuanwise.command.annotation.Command("pl debug")
         void debug(CommandSender commandSender) {
             final boolean setTo = !contact.isDebug();
             contact.setDebug(setTo);
@@ -61,19 +61,19 @@ public class BukkitPandaPlugin
             }
         }
 
-        @Format("pl test remain [remain~]")
+        @cn.chuanwise.command.annotation.Command("pl test remain [remain~]")
         void testRemain(CommandSender commandSender,
                         @Reference("remain") String remain) {
             contact.infoString(commandSender, "remain = " + remain);
         }
 
-        @Format("pl test nullable-remain [nullable-remain?~]")
+        @cn.chuanwise.command.annotation.Command("pl test nullable-remain [nullable-remain?~]")
         void testNullableRemain(CommandSender commandSender,
                                 @Reference("nullable-remain") String remain) {
             contact.infoString(commandSender, "nullable-remain = " + remain);
         }
 
-        @Format("pl op [-time|t] [-date|d=true|false] [-e?qwq]")
+        @cn.chuanwise.command.annotation.Command("pl op [-time|t] [-date|d=true|false] [-e?qwq]")
         void testOp1(CommandSender commandSender,
                      @Reference("t") String t,
                      @Reference("date") String date,
@@ -81,7 +81,7 @@ public class BukkitPandaPlugin
             contact.infoString(commandSender, "t = " + t + ", date = " + date + ", e = " + e);
         }
 
-        @Format("pl op [-date|d=true|false] [-admin=true|false] [-e?qwq]")
+        @cn.chuanwise.command.annotation.Command("pl op [-date|d=true|false] [-admin=true|false] [-e?qwq]")
         void testOp2(CommandSender commandSender,
                      @Reference("date") String date,
                      @Reference("e") String e,
@@ -94,13 +94,13 @@ public class BukkitPandaPlugin
             return BukkitPandaPlugin.getInstance();
         }
 
-        @Format("pl [-world]")
+        @cn.chuanwise.command.annotation.Command("pl [-world]")
         void dd(CommandSender commandSender,
                 @Reference("world") World world) {
             contact.infoString(commandSender, "world name = " + world.getName());
         }
 
-        @Format("pl [player] say [msg~]")
+        @cn.chuanwise.command.annotation.Command("pl [player] say [msg~]")
         void s(CommandSender commandSender,
                @Reference("player") Player player,
                @Reference("msg") String msg) {
@@ -108,24 +108,24 @@ public class BukkitPandaPlugin
             contact.infoString(commandSender, "msg sent to " + player.getName());
         }
 
-        @Format("pl [-plugin]")
+        @cn.chuanwise.command.annotation.Command("pl [-plugin]")
         void dd(CommandSender commandSender,
                 @Reference("plugin") Plugin plugin) {
             contact.infoString(commandSender, "plugin name = " + plugin.getName());
         }
 
-        @Format("pl strong test")
+        @cn.chuanwise.command.annotation.Command("pl strong test")
         void strong(CommandSender commandSender) {
             contact.infoString(commandSender, "strong");
         }
 
-        @Format("pl strong [test?~]")
+        @cn.chuanwise.command.annotation.Command("pl strong [test?~]")
         void week(CommandSender commandSender,
                   @Reference("test") String test) {
             contact.infoString(commandSender, "week, test = " + test);
         }
 
-        @Format("pl complete-space [plugin] ha")
+        @cn.chuanwise.command.annotation.Command("pl complete-space [plugin] ha")
         void week(CommandSender commandSender,
                   @Reference("plugin") BukkitPandaPlugin plugin) {
             contact.infoString(commandSender, "completed");
@@ -157,7 +157,7 @@ public class BukkitPandaPlugin
             cause.printStackTrace();
         }
 
-        @Format("pl help|h")
+        @cn.chuanwise.command.annotation.Command("pl help|h")
         void help(CommandSender sender) {
             final Set<Command> commands = commander.getCommandTree().getCommands();
             contact.infoString(sender, Collections.toString(commands, x -> "> " + x.getFormat(), "\n"));

@@ -1,11 +1,12 @@
 package cn.chuanwise.panda.bukkit.command.handler;
 
+import cn.chuanwise.command.Commander;
 import cn.chuanwise.command.command.Command;
 import cn.chuanwise.command.command.CommandExecutor;
 import cn.chuanwise.command.command.MethodCommandExecutor;
 import cn.chuanwise.command.context.CompleteContext;
 import cn.chuanwise.command.context.ParseContext;
-import cn.chuanwise.command.event.CommandExecutePreEvent;
+import cn.chuanwise.command.event.CommandPreExecuteEvent;
 import cn.chuanwise.command.event.CommandRegisterEvent;
 import cn.chuanwise.command.event.EventHandler;
 import cn.chuanwise.command.handler.AbstractClassHandler;
@@ -13,7 +14,9 @@ import cn.chuanwise.common.space.Container;
 import cn.chuanwise.common.util.Strings;
 import cn.chuanwise.panda.annotation.Required;
 import cn.chuanwise.panda.bukkit.command.BukkitCommander;
+import cn.chuanwise.panda.bukkit.command.event.BukkitLackPermissionEvent;
 import cn.chuanwise.panda.command.Properties;
+import cn.chuanwise.panda.command.event.AbstractLackPermissionEvent;
 import lombok.Data;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
@@ -40,25 +43,40 @@ public class PermissionHandler
 
     @Override
     public boolean handleEvent(Object event) throws Exception {
-        if (event instanceof CommandExecutePreEvent) {
-            final CommandExecutePreEvent commandExecutePreEvent = (CommandExecutePreEvent) event;
-            final CommandSender commandSender = (CommandSender) commandExecutePreEvent.getCommandSender();
+        if (event instanceof CommandPreExecuteEvent) {
+            final CommandPreExecuteEvent commandPreExecuteEvent = (CommandPreExecuteEvent) event;
+            final CommandSender commandSender = (CommandSender) commandPreExecuteEvent.getCommandSender();
 
             // check permission
-            final Command command = commandExecutePreEvent.getCommand();
+            final Command command = commandPreExecuteEvent.getCommand();
             final String permission = command.getProperty(Properties.PERMISSION);
             if (Objects.nonNull(permission)) {
                 if (!commandSender.hasPermission(permission)) {
-                    commandExecutePreEvent.setCancelled(true);
-
+                    
                     // 发送权限消息
                     final String permissionMessage = command.getProperty(Properties.PERMISSION_MESSAGE);
-                    if (Strings.nonEmpty(permissionMessage)) {
+                    final Commander commander = commandPreExecuteEvent.getCommander();
+                    final AbstractLackPermissionEvent abstractLackPermissionEvent = new BukkitLackPermissionEvent(
+                        commander,
+                        commandPreExecuteEvent.getCommand(),
+                        commandSender,
+                        commandPreExecuteEvent.getReferenceInfo(),
+                        permission,
+                        permissionMessage
+                    );
+    
+                    final boolean handled = commander.getEventService().broadcastEvent(abstractLackPermissionEvent);
+                    if (!abstractLackPermissionEvent.isCancelled()) {
+                        commandPreExecuteEvent.setCancelled(true);
+                    }
+    
+                    if (!handled && Strings.nonEmpty(permissionMessage)) {
                         commandSender.sendMessage(permissionMessage);
                     }
                 }
             }
-            return false;
+            
+            return true;
         }
         if (event instanceof CommandRegisterEvent) {
             final CommandRegisterEvent commandRegisterEvent = (CommandRegisterEvent) event;
@@ -74,6 +92,8 @@ public class PermissionHandler
                     command.setProperty(Properties.PERMISSION, required.value());
                 }
             }
+            
+            return true;
         }
         return false;
     }
